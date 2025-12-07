@@ -8,9 +8,9 @@ const honk = Honk({ subsets: ["latin"], weight: "400" });
 const orbitron = Orbitron({ subsets: ["latin"], weight: "700" });
 
 function useTypewriter(text: string, delay: number = 80) {
-  const [displayed, setDisplayed] = useState('');
+  const [displayed, setDisplayed] = useState("");
   useEffect(() => {
-    setDisplayed('');
+    setDisplayed("");
     let i = 0;
     let active = true;
     function step() {
@@ -22,7 +22,9 @@ function useTypewriter(text: string, delay: number = 80) {
       }
     }
     step();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [text, delay]);
   return displayed;
 }
@@ -30,7 +32,9 @@ function useTypewriter(text: string, delay: number = 80) {
 export default function LoaderPage() {
   const router = useRouter();
 
-  const [screen, setScreen] = useState<"start" | "loader" | "kr" | "typing">("start");
+  const [screen, setScreen] = useState<"start" | "loader" | "kr" | "typing">(
+    "start"
+  );
   const [count, setCount] = useState(0);
   const [isWhiteMode, setIsWhiteMode] = useState(false);
   const [krVisible, setKrVisible] = useState(true);
@@ -61,16 +65,21 @@ export default function LoaderPage() {
 
   // Play/pause loader audio based on loader visibility
   useEffect(() => {
+    const audio = audioRef.current;
     if (["loader", "kr", "typing"].includes(screen)) {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
-        audioRef.current.play().catch(() => {});
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
       }
     }
     return () => {
-      if (!["loader", "kr", "typing"].includes(screen) && audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+      const audioCleanup = audioRef.current;
+      if (
+        !["loader", "kr", "typing"].includes(screen) &&
+        audioCleanup
+      ) {
+        audioCleanup.pause();
+        audioCleanup.currentTime = 0;
       }
     };
   }, [screen]);
@@ -78,12 +87,13 @@ export default function LoaderPage() {
   // Ensure audio is stopped on route change
   useEffect(() => {
     const stopAudio = () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
       }
     };
-    router.prefetch?.("/home"); // Safe prefetch check
+    router.prefetch?.("/home");
     return () => {
       stopAudio();
       cleanupAnimations();
@@ -94,16 +104,17 @@ export default function LoaderPage() {
   useEffect(() => {
     if (screen === "typing" && typedText === fullName) {
       const timeout = setTimeout(() => {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
+        const audio = audioRef.current;
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
         }
         cleanupAnimations();
         router.push("/home");
       }, 1000);
       return () => clearTimeout(timeout);
     }
-  }, [screen, typedText, router, fullName, cleanupAnimations]);
+  }, [screen, typedText, router, cleanupAnimations]);
 
   // Loader progress logic
   useEffect(() => {
@@ -146,7 +157,7 @@ export default function LoaderPage() {
     const dpr = window.devicePixelRatio || 1;
     let width = window.innerWidth * dpr;
     let height = window.innerHeight * dpr;
-    
+
     const resize = () => {
       width = window.innerWidth * dpr;
       height = window.innerHeight * dpr;
@@ -234,7 +245,7 @@ export default function LoaderPage() {
     const dpr = window.devicePixelRatio || 1;
     let width = window.innerWidth * dpr;
     let height = window.innerHeight * dpr;
-    
+
     const resize = () => {
       width = window.innerWidth * dpr;
       height = window.innerHeight * dpr;
@@ -251,8 +262,8 @@ export default function LoaderPage() {
     const KRcenterY = height / 2;
     const KRWidth = 190 * dpr;
 
-    let leftBall = { x: -ballRadius, y: KRcenterY, vx: 3.0 * dpr, vy: 0 };
-    let rightBall = { x: width + ballRadius, y: KRcenterY, vx: -3.0 * dpr, vy: 0 };
+    const leftBall = { x: -ballRadius, y: KRcenterY, vx: 3.0 * dpr, vy: 0 };
+    const rightBall = { x: width + ballRadius, y: KRcenterY, vx: -3.0 * dpr, vy: 0 };
     let leftBouncing = false;
     let rightBouncing = false;
     let bounceFrame = 0;
@@ -358,9 +369,10 @@ export default function LoaderPage() {
   useEffect(() => {
     return () => {
       cleanupAnimations();
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
       }
     };
   }, [cleanupAnimations]);
@@ -388,7 +400,7 @@ export default function LoaderPage() {
           background: "transparent",
         }}
       />
-      
+
       {/* Ball animation canvas */}
       {(screen === "kr" && ballsVisible) || (screen === "typing" && ballsVisible) ? (
         <canvas
@@ -417,28 +429,28 @@ export default function LoaderPage() {
             className={`letsgo-btn ${orbitron.className}`}
             onClick={() => setScreen("loader")}
           >
-            Let's Go
+            Let&apos;s Go
           </button>
         </div>
       )}
-      
+
       {screen === "loader" && (
         <div className="loading-screen">
           <h1 className="loading-text">{count}%</h1>
         </div>
       )}
-      
+
       {screen === "kr" && krVisible && (
         <div className="initials-screen">
-          <h1 
-            className="initials-text black-kr" 
+          <h1
+            className="initials-text black-kr"
             style={{ opacity: krVisible ? 1 : 0 }}
           >
             KR
           </h1>
         </div>
       )}
-      
+
       {screen === "typing" && (
         <div className="initials-screen">
           <h1 className="typewriter-text">
