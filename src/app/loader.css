@@ -1,0 +1,151 @@
+.loader-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: "Honk", cursive;
+  z-index: 1;
+  background: black;
+}
+
+/* Start screen button overlay */
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  z-index: 999;
+}
+
+.letsgo-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  color: #fff;
+  background: transparent;
+  border: 4px solid #fff;
+  border-radius: 40px;
+  padding: 24px 60px;
+  box-shadow: 0 0 40px #ff4df0, 0 0 60px #230043;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  letter-spacing: 4px;
+  outline: none;
+  position: relative;
+  z-index: 9999;
+}
+.letsgo-btn:hover {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 80px #ff4df0, 0 0 100px #230043;
+  border-color: #fff;
+}
+
+/* Loader screen and initials screen stacking */
+.loading-screen,
+.initials-screen {
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Loader percent text */
+.loading-text {
+  font-size: 6rem;
+  font-weight: 700;
+  color: #ff4df0;
+  text-shadow: 0 0 15px #ff4df0, 0 0 40px #ff4df0;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* KR initials ✨ */
+.initials-text {
+  font-size: 9rem;
+  font-weight: 900;
+  letter-spacing: 18px;
+  color: #ff4df0;
+  text-shadow: 0 0 30px #ff4df0, 0 0 80px #ff4df0;
+  animation: pulse 2s infinite alternate, fadeIn 1s ease-in;
+  font-family: "Orbitron", sans-serif;
+  transition: all 1s ease;
+  opacity: 1;
+}
+
+/* Alternate mode for black initials */
+.black-kr {
+  color: black;
+  text-shadow: 0 0 30px #000, 0 0 50px #555;
+  transition: all 1s ease;
+}
+
+/* Ball collision/canvas overlays */
+.balls-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+}
+.neuron-bg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: transparent;
+}
+
+/* Typewriter text for "KRITIKA RUHELA" (centered and styled) */
+.typewriter-text {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #ff4df0;
+  animation: blink-cursor 0.8s steps(1) infinite;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Orbitron", sans-serif;
+  font-size: 4rem;
+  color: #160028;
+  font-weight: 700;
+  letter-spacing: 7px;
+  z-index: 30;
+  text-shadow: 0 0 8px #ff4df0;
+}
+
+/* Blinking cursor for typewriter effect */
+@keyframes blink-cursor {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: #ff4df0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse {
+  from {
+    text-shadow: 0 0 20px #c4008c, 0 0 70px #ff4df0;
+    transform: scale(1);
+  }
+  to {
+    text-shadow: 0 0 70px #c4008c, 0 0 120px #ff4df0;
+    transform: scale(1.07);
+  }
+}
