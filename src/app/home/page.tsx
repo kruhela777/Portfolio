@@ -51,81 +51,83 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const canvas = canvasRef.current;
+  if (!canvas) return;
 
-    const dpr = window.devicePixelRatio || 1;
-    let width = window.innerWidth * dpr;
-    let height = window.innerHeight * dpr;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  if (!ctx) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  let width = window.innerWidth * dpr;
+  let height = window.innerHeight * dpr;
+  canvas.width = width;
+  canvas.height = height;
+
+  const resize = () => {
+    width = window.innerWidth * dpr;
+    height = window.innerHeight * dpr;
     canvas.width = width;
     canvas.height = height;
+  };
+  window.addEventListener("resize", resize);
 
-    const resize = () => {
-      width = window.innerWidth * dpr;
-      height = window.innerHeight * dpr;
-      canvas.width = width;
-      canvas.height = height;
-    };
-    window.addEventListener("resize", resize);
+  const randDir = () => Math.random() * 1.2 - 0.6;
+  const createNeuron = () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    vx: randDir(),
+    vy: randDir(),
+    r: Math.random() * 2 + 1.2
+  });
 
-    const randDir = () => Math.random() * 1.2 - 0.6;
-    const createNeuron = () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: randDir(),
-      vy: randDir(),
-      r: Math.random() * 2 + 1.2
-    });
+  const neuronCount = 60;
+  const neurons = Array.from({ length: neuronCount }, createNeuron);
 
-    const neuronCount = 60;
-    const neurons = Array.from({ length: neuronCount }, createNeuron);
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    const color = darkMode ? "white" : "black";
 
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      const color = darkMode ? "white" : "black";
-
-      for (let i = 0; i < neuronCount; i++) {
-        for (let j = i + 1; j < neuronCount; j++) {
-          const dx = neurons[i].x - neurons[j].x;
-          const dy = neurons[i].y - neurons[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120 * dpr) {
-            ctx.save();
-            ctx.globalAlpha = 0.8 - dist / (120 * dpr);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 0.6 * dpr;
-            ctx.beginPath();
-            ctx.moveTo(neurons[i].x, neurons[i].y);
-            ctx.lineTo(neurons[j].x, neurons[j].y);
-            ctx.stroke();
-            ctx.restore();
-          }
+    for (let i = 0; i < neuronCount; i++) {
+      for (let j = i + 1; j < neuronCount; j++) {
+        const dx = neurons[i].x - neurons[j].x;
+        const dy = neurons[i].y - neurons[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120 * dpr) {
+          ctx.save();
+          ctx.globalAlpha = 0.8 - dist / (120 * dpr);
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 0.6 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(neurons[i].x, neurons[i].y);
+          ctx.lineTo(neurons[j].x, neurons[j].y);
+          ctx.stroke();
+          ctx.restore();
         }
       }
-
-      for (const n of neurons) {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 10;
-        ctx.fill();
-
-        n.x += n.vx;
-        n.y += n.vy;
-
-        if (n.x < 0 || n.x > width) n.vx *= -1;
-        if (n.y < 0 || n.y > height) n.vy *= -1;
-      }
-
-      requestAnimationFrame(animate);
     }
 
-    animate();
-    return () => window.removeEventListener("resize", resize);
-  }, [darkMode]);
+    for (const n of neurons) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r * dpr, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      ctx.fill();
+
+      n.x += n.vx;
+      n.y += n.vy;
+
+      if (n.x < 0 || n.x > width) n.vx *= -1;
+      if (n.y < 0 || n.y > height) n.vy *= -1;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+  return () => window.removeEventListener("resize", resize);
+}, [darkMode]);
+
 
   return (
     <canvas
