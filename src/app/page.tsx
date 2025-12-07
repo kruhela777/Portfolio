@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import "./loader.css";
@@ -7,12 +8,15 @@ import { Honk, Orbitron } from "next/font/google";
 const honk = Honk({ subsets: ["latin"], weight: "400" });
 const orbitron = Orbitron({ subsets: ["latin"], weight: "700" });
 
+// TYPEWRITER
 function useTypewriter(text: string, delay: number = 80) {
   const [displayed, setDisplayed] = useState("");
+
   useEffect(() => {
     setDisplayed("");
     let i = 0;
     let active = true;
+
     function step() {
       if (!active) return;
       if (i <= text.length) {
@@ -21,11 +25,13 @@ function useTypewriter(text: string, delay: number = 80) {
         setTimeout(step, delay);
       }
     }
+
     step();
     return () => {
       active = false;
     };
   }, [text, delay]);
+
   return displayed;
 }
 
@@ -47,11 +53,10 @@ export default function LoaderPage() {
   const animationFrameRef = useRef<number>(0);
   const loaderIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // --- TYPEWRITER LOGIC ---
   const fullName = "KRITIKA RUHELA";
   const typedText = useTypewriter(screen === "typing" ? fullName : "");
 
-  // Cleanup function for all animations and intervals
+  // Cleanup animations
   const cleanupAnimations = useCallback(() => {
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
@@ -63,44 +68,46 @@ export default function LoaderPage() {
     }
   }, []);
 
-  // Play/pause loader audio based on loader visibility
+  // Audio play/pause based on screen
   useEffect(() => {
     const audio = audioRef.current;
+
     if (["loader", "kr", "typing"].includes(screen)) {
       if (audio) {
         audio.currentTime = 0;
         audio.play().catch(() => {});
       }
     }
+
     return () => {
-      const audioCleanup = audioRef.current;
-      if (
-        !["loader", "kr", "typing"].includes(screen) &&
-        audioCleanup
-      ) {
+      const audioCleanup = audio;
+      if (!["loader", "kr", "typing"].includes(screen) && audioCleanup) {
         audioCleanup.pause();
         audioCleanup.currentTime = 0;
       }
     };
   }, [screen]);
 
-  // Ensure audio is stopped on route change
+  // Stop audio on page change
   useEffect(() => {
+    const localAudio = audioRef.current;
+
     const stopAudio = () => {
-      const audio = audioRef.current;
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+      if (localAudio) {
+        localAudio.pause();
+        localAudio.currentTime = 0;
       }
     };
+
     router.prefetch?.("/home");
+
     return () => {
       stopAudio();
       cleanupAnimations();
     };
   }, [router, cleanupAnimations]);
 
-  // Route to /home after typing is finished
+  // After typing, go to home
   useEffect(() => {
     if (screen === "typing" && typedText === fullName) {
       const timeout = setTimeout(() => {
@@ -116,7 +123,7 @@ export default function LoaderPage() {
     }
   }, [screen, typedText, router, cleanupAnimations]);
 
-  // Loader progress logic
+  // Loader progress
   useEffect(() => {
     if (screen === "loader") {
       const interval = setInterval(() => {
@@ -124,6 +131,7 @@ export default function LoaderPage() {
           if (prev >= 100) {
             clearInterval(interval);
             loaderIntervalRef.current = null;
+
             setTimeout(() => {
               setIsWhiteMode(true);
               setScreen("kr");
@@ -131,13 +139,16 @@ export default function LoaderPage() {
               setBallsVisible(true);
               ballsMovingApartRef.current = false;
             }, 700);
+
             return 100;
           }
           return prev + 1;
         });
       }, 20);
+
       loaderIntervalRef.current = interval;
     }
+
     return () => {
       if (loaderIntervalRef.current) {
         clearInterval(loaderIntervalRef.current);
@@ -146,7 +157,7 @@ export default function LoaderPage() {
     };
   }, [screen]);
 
-  // Neuron BG animation
+  // NEURON BACKGROUND
   useEffect(() => {
     const canvas = neuronCanvasRef.current;
     if (!canvas) return;
@@ -155,6 +166,7 @@ export default function LoaderPage() {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
+
     let width = window.innerWidth * dpr;
     let height = window.innerHeight * dpr;
 
@@ -167,9 +179,11 @@ export default function LoaderPage() {
 
     canvas.width = width;
     canvas.height = height;
+
     window.addEventListener("resize", resize);
 
     const randomDir = () => Math.random() * 1.2 - 0.6;
+
     const createNeuron = () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -184,7 +198,6 @@ export default function LoaderPage() {
       ctx.clearRect(0, 0, width, height);
       const color = isWhiteMode ? "black" : "white";
 
-      // Draw connections
       for (let i = 0; i < neurons.length; i++) {
         for (let j = i + 1; j < neurons.length; j++) {
           const dx = neurons[i].x - neurons[j].x;
@@ -204,7 +217,6 @@ export default function LoaderPage() {
         }
       }
 
-      // Draw neurons and update positions
       for (const n of neurons) {
         ctx.save();
         ctx.beginPath();
@@ -217,6 +229,7 @@ export default function LoaderPage() {
 
         n.x += n.vx;
         n.y += n.vy;
+
         if (n.x <= 0 || n.x >= width) n.vx *= -1;
         if (n.y <= 0 || n.y >= height) n.vy *= -1;
       }
@@ -232,7 +245,7 @@ export default function LoaderPage() {
     };
   }, [isWhiteMode, cleanupAnimations]);
 
-  // Ball animation
+  // BALL ANIMATION
   useEffect(() => {
     if ((screen !== "kr" && screen !== "typing") || !ballsVisible) return;
 
@@ -243,6 +256,7 @@ export default function LoaderPage() {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
+
     let width = window.innerWidth * dpr;
     let height = window.innerHeight * dpr;
 
@@ -255,6 +269,7 @@ export default function LoaderPage() {
 
     canvas.width = width;
     canvas.height = height;
+
     window.addEventListener("resize", resize);
 
     const ballRadius = 46 * dpr;
@@ -264,6 +279,7 @@ export default function LoaderPage() {
 
     const leftBall = { x: -ballRadius, y: KRcenterY, vx: 3.0 * dpr, vy: 0 };
     const rightBall = { x: width + ballRadius, y: KRcenterY, vx: -3.0 * dpr, vy: 0 };
+
     let leftBouncing = false;
     let rightBouncing = false;
     let bounceFrame = 0;
@@ -275,7 +291,6 @@ export default function LoaderPage() {
       ctx.clearRect(0, 0, width, height);
 
       if (!ballsMovingApartRef.current) {
-        // Move balls toward center
         if (!leftBouncing) {
           if (leftBall.x + ballRadius < KRcenterX - KRWidth / 2) {
             leftBall.x += leftBall.vx;
@@ -300,15 +315,14 @@ export default function LoaderPage() {
           rightBall.y -= Math.sin(bounceFrame / 11) * 2 * dpr;
         }
 
-        // Check for collision phase
         if (leftBouncing && rightBouncing && !collisionPhase) {
           if (bounceFrame > 52) collisionPhase = true;
         }
 
-        // Collision and removal phase
         if (collisionPhase && !removingPhase) {
           leftBall.x += 4.2 * dpr;
           rightBall.x -= 4.2 * dpr;
+
           if (
             leftBall.x + ballRadius >= KRcenterX - KRWidth / 2 &&
             rightBall.x - ballRadius <= KRcenterX + KRWidth / 2
@@ -320,7 +334,6 @@ export default function LoaderPage() {
           }
         }
       } else {
-        // Balls moving apart
         movingApartFrame++;
         leftBall.x -= 5.0 * dpr;
         rightBall.x += 5.0 * dpr;
@@ -329,9 +342,7 @@ export default function LoaderPage() {
         }
       }
 
-      // Draw balls if visible
       if (ballsVisible) {
-        // Left ball
         ctx.save();
         ctx.beginPath();
         ctx.arc(leftBall.x, leftBall.y, ballRadius, 0, 2 * Math.PI);
@@ -342,7 +353,6 @@ export default function LoaderPage() {
         ctx.fill();
         ctx.restore();
 
-        // Right ball
         ctx.save();
         ctx.beginPath();
         ctx.arc(rightBall.x, rightBall.y, ballRadius, 0, 2 * Math.PI);
@@ -365,7 +375,7 @@ export default function LoaderPage() {
     };
   }, [screen, ballsVisible, cleanupAnimations]);
 
-  // Cleanup on unmount
+  // On UNMOUNT cleanup
   useEffect(() => {
     return () => {
       cleanupAnimations();
@@ -385,44 +395,41 @@ export default function LoaderPage() {
         transition: "background-color 1s ease",
       }}
     >
-      {/* Neuron background */}
       <canvas
         ref={neuronCanvasRef}
         className="neuron-bg-canvas"
         style={{
-          position: "absolute" as const,
+          position: "absolute",
           top: 0,
           left: 0,
           width: "100vw",
           height: "100vh",
           zIndex: 0,
-          pointerEvents: "none" as const,
+          pointerEvents: "none",
           background: "transparent",
         }}
       />
 
-      {/* Ball animation canvas */}
-      {(screen === "kr" && ballsVisible) || (screen === "typing" && ballsVisible) ? (
+      {(screen === "kr" && ballsVisible) ||
+      (screen === "typing" && ballsVisible) ? (
         <canvas
           ref={ballsCanvasRef}
           className="balls-canvas"
           style={{
-            position: "absolute" as const,
+            position: "absolute",
             top: 0,
             left: 0,
             width: "100vw",
             height: "100vh",
             zIndex: 2,
-            pointerEvents: "none" as const,
+            pointerEvents: "none",
             background: "transparent",
           }}
         />
       ) : null}
 
-      {/* Audio */}
       <audio ref={audioRef} src="/loader-sound.mp3" preload="auto" loop />
 
-      {/* UI */}
       {screen === "start" && (
         <div className="start-screen">
           <button
@@ -442,10 +449,7 @@ export default function LoaderPage() {
 
       {screen === "kr" && krVisible && (
         <div className="initials-screen">
-          <h1
-            className="initials-text black-kr"
-            style={{ opacity: krVisible ? 1 : 0 }}
-          >
+          <h1 className="initials-text black-kr" style={{ opacity: 1 }}>
             KR
           </h1>
         </div>
