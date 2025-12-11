@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Orbitron:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Anton:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
 :root {
   --bg: #fff;
   --border: #200d0d;
@@ -531,77 +533,72 @@ body:not(.dark-mode) {
 body.dark-mode .big-i-can {
   color: #ffffff;          /* force white in dark mode */
 }
-
-/* I CAN + scroller row */
+/* I CAN row */
 .ican-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 24px;
   margin: 80px 0 120px;
+  margin-left: 100px;
 }
 
-/* scroller container — same height as I CAN line */
-.ican-scroller {
+/* I CAN text */
+.big-i-can {
   position: relative;
+  z-index: 2;
+  font-size: 80px;
+  font-weight: 800;
+  font-family: "Audiowide", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* window: shows exactly one word (by pixels) */
+.ican-window {
+  width: auto;
+  height: 100px;        /* one line height in pixels */
   overflow: hidden;
-  height: 6rem;              /* match .big-i-can font size */
   display: flex;
   align-items: center;
 }
 
-/* vertical list of words */
-.ican-words {
+/* vertical track */
+.ican-track {
   display: flex;
   flex-direction: column;
-  animation: ican-scroll 10s linear infinite;
+  font-size: 80px;
+  line-height: 100px;   /* or whatever you are currently using */
+  font-weight: 800;
+  color: #1e87dd;
+  font-family: "Audiowide", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  animation: ican-slide 14s linear infinite;
 }
 
-.ican-words span {
-  font-size: 6rem;           /* same size as I CAN */
-  font-weight: bold;
-  line-height: 1;
-  color: #1eabc7;            /* blue */
-  text-transform: uppercase;
-  white-space: nowrap;
+/* every word is exactly 100px tall and centered */
+.ican-track span {
+  height: 100px;
+  display: flex;
+  align-items: center;
 }
 
-/* scroll animation: one full line per step */
-@keyframes ican-scroll {
+/* 7 spans (6 words + repeated) → 6 steps of 100px */
+@keyframes ican-slide {
   0%   { transform: translateY(0); }
-  20%  { transform: translateY(0); }
-  25%  { transform: translateY(-6rem); }
-  45%  { transform: translateY(-6rem); }
-  50%  { transform: translateY(-12rem); }
-  70%  { transform: translateY(-12rem); }
-  75%  { transform: translateY(-18rem); }
-  95%  { transform: translateY(-18rem); }
-  100% { transform: translateY(-24rem); }
-}
+  14%  { transform: translateY(0); }
 
-/* responsive tweak */
-@media (max-width: 900px) {
-  .ican-row {
-    flex-direction: column;
-    gap: 12px;
-  }
+  16%  { transform: translateY(-100px); }
+  30%  { transform: translateY(-100px); }
 
-  .big-i-can,
-  .ican-words span,
-  .ican-scroller {
-    font-size: 3rem;
-    height: 3rem;
-  }
+  32%  { transform: translateY(-200px); }
+  46%  { transform: translateY(-200px); }
 
-  @keyframes ican-scroll {
-    0%   { transform: translateY(0); }
-    20%  { transform: translateY(0); }
-    25%  { transform: translateY(-3rem); }
-    45%  { transform: translateY(-3rem); }
-    50%  { transform: translateY(-6rem); }
-    70%  { transform: translateY(-6rem); }
-    75%  { transform: translateY(-9rem); }
-    95%  { transform: translateY(-9rem); }
-    100% { transform: translateY(-12rem); }
-  }
+  48%  { transform: translateY(-300px); }
+  62%  { transform: translateY(-300px); }
+
+  64%  { transform: translateY(-400px); }
+  78%  { transform: translateY(-400px); }
+
+  80%  { transform: translateY(-500px); }
+  94%  { transform: translateY(-500px); }
+
+  100% { transform: translateY(-600px); } /* repeated 'develop' */
 }

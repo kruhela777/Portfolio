@@ -245,21 +245,23 @@ export default function HomePage() {
         <CreativeDeveloperSection darkMode={darkMode} />
       </div>
 
-      {/* I CAN + blue scroller */}
       <div className="ican-row">
-        <div className="big-i-can">I CAN</div>
+  <div className={`big-i-can ${darkMode ? "dark" : ""}`}>I can</div>
 
-        <div className="ican-scroller">
-          <div className="ican-words">
-            <span>develop.</span>
-            <span>innovate.</span>
-            <span>design.</span>
-            <span>build.</span>
-            <span>prototype.</span>
-            <span>solve.</span>
-          </div>
-        </div>
-      </div>
+  <div className="ican-window">
+    <div className="ican-track">
+      <span>develop.</span>
+      <span>innovate.</span>
+      <span>design.</span>
+      <span>build.</span>
+      <span>prototype.</span>
+      <span>collaborate.</span>
+      {/* repeat first word for smooth loop */}
+      <span>develop.</span>
+    </div>
+  </div>
+</div>
+
     </>
   );
 }
