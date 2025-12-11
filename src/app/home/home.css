@@ -7,12 +7,16 @@
   --mono: 'Fira Mono', monospace;
   --orbitron: 'Orbitron', Arial, sans-serif;
   --serif: 'Playfair Display', serif;
+  --accent: hsl(280 100% 50%);
 }
 
+/* remove the old body:not(.dark-mode) override here */
 body {
   margin: 0;
   background: var(--bg);
+  color: var(--border);
   transition: background 0.4s ease, color 0.4s ease;
+  min-height: 200vh;
 }
 
 .navbar-img {
@@ -490,6 +494,7 @@ body.dark-mode .creative-bio-text {
   height: 100vh;        /* bring front, but not above interactive nav/panels */
   pointer-events: none;
   background: transparent;
+  z-index: 0; /* explicit */
 }
 
 
@@ -503,65 +508,100 @@ body:not(.dark-mode) .neuron-bg-canvas {
   background: #fff;
 }
 
-.scroll-text-section header {
-  --font-level: 4;
-  --font-size-min: 24;
-  position: sticky;
-  top: calc((var(--count) - 1) * -1lh);
-  line-height: 1.2;
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  margin-bottom: 50vh;
+/* Ensure background contrast for the section where I CAN appears */
+body:not(.dark-mode) {
+  background-color: #ffffff;
+  color: #000000;
 }
 
-.scroll-text-section header section:first-of-type {
+/* Base I CAN style */
+.big-i-can {
+  position: relative;      /* keep it above canvas */
+  z-index: 2;
+  text-align: center;
+  font-size: 6rem;
+  font-weight: bold;
+  margin: 80px 0 120px;
+  color: #000000;          /* force black in light mode */
+  transition: color 0.3s;
+  margin-top: 120px;
+}
+
+/* Dark mode override */
+body.dark-mode .big-i-can {
+  color: #ffffff;          /* force white in dark mode */
+}
+
+/* I CAN + scroller row */
+.ican-row {
   display: flex;
-  width: 100%;
-  align-items: flex-start;
   justify-content: center;
-  padding-top: calc(50vh - 0.5lh);
+  align-items: center;
+  gap: 24px;
+  margin: 80px 0 120px;
 }
 
-.scroll-text-section h1 {
-  position: sticky;
-  top: calc(50vh - 0.5lh);
-  font-size: inherit;
-  margin: 0;
-  display: inline-block;
-  height: fit-content;
-  font-weight: 600;
-}
-
-.scroll-text-section ul {
-  font-weight: 600;
-  padding-inline: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.scroll-text-section li {
-  --dimmed: color-mix(in oklch, canvasText, #0000 80%);
-  background: linear-gradient(
-    180deg,
-    var(--dimmed) 0 calc(50vh - 0.5lh),
-    var(--accent, hsl(280 100% 50%)) calc(50vh - 0.55lh) calc(50vh + 0.55lh),
-    var(--dimmed) calc(50vh + 0.5lh)
-  );
-  background-attachment: fixed;
-  color: transparent;
-  background-clip: text;
-}
-
-/* sr-only helper */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+/* scroller container — same height as I CAN line */
+.ican-scroller {
+  position: relative;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  height: 6rem;              /* match .big-i-can font size */
+  display: flex;
+  align-items: center;
+}
+
+/* vertical list of words */
+.ican-words {
+  display: flex;
+  flex-direction: column;
+  animation: ican-scroll 10s linear infinite;
+}
+
+.ican-words span {
+  font-size: 6rem;           /* same size as I CAN */
+  font-weight: bold;
+  line-height: 1;
+  color: #1eabc7;            /* blue */
+  text-transform: uppercase;
   white-space: nowrap;
-  border-width: 0;
+}
+
+/* scroll animation: one full line per step */
+@keyframes ican-scroll {
+  0%   { transform: translateY(0); }
+  20%  { transform: translateY(0); }
+  25%  { transform: translateY(-6rem); }
+  45%  { transform: translateY(-6rem); }
+  50%  { transform: translateY(-12rem); }
+  70%  { transform: translateY(-12rem); }
+  75%  { transform: translateY(-18rem); }
+  95%  { transform: translateY(-18rem); }
+  100% { transform: translateY(-24rem); }
+}
+
+/* responsive tweak */
+@media (max-width: 900px) {
+  .ican-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .big-i-can,
+  .ican-words span,
+  .ican-scroller {
+    font-size: 3rem;
+    height: 3rem;
+  }
+
+  @keyframes ican-scroll {
+    0%   { transform: translateY(0); }
+    20%  { transform: translateY(0); }
+    25%  { transform: translateY(-3rem); }
+    45%  { transform: translateY(-3rem); }
+    50%  { transform: translateY(-6rem); }
+    70%  { transform: translateY(-6rem); }
+    75%  { transform: translateY(-9rem); }
+    95%  { transform: translateY(-9rem); }
+    100% { transform: translateY(-12rem); }
+  }
 }
