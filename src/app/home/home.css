@@ -1699,22 +1699,22 @@ body.dark-mode .tech-stack-sub-icon {
   pointer-events: none;
 
   background-image:
-    /* softer vignette so center is brighter */
+    /* softer, more transparent vignette */
     radial-gradient(
       circle at 55% 50%,
       transparent 0%,
-      transparent 65%,
-      rgba(0, 8, 25, 0.6) 95%
+      transparent 70%,
+      rgba(0, 8, 25, 0.4) 100%
     ),
-    /* brighter, slightly tighter rings */
+    /* diffused, lower-contrast rings */
     repeating-radial-gradient(
       circle at 55% 50%,
-      rgba(20, 169, 202, 0.32) 0px,
-      rgba(20, 169, 202, 0.32) 20px,
-      transparent 20px,
-      transparent 40px
+      rgba(20, 169, 202, 0.22) 0px,
+      rgba(20, 169, 202, 0.22) 24px,
+      transparent 24px,
+      transparent 48px
     );
 
-  opacity: 0.55;          /* was 0.35 */
+  opacity: 0.45;           /* slightly lower so it melts into the bg */
   mix-blend-mode: screen;
 }
