@@ -1985,3 +1985,153 @@ body.dark-mode .tech-stack-sub-icon {
   z-index: 0;
   pointer-events: none;
 }
+
+.my-journey-section {
+  position: relative;
+  min-height: 140vh;
+  padding: 10rem 0;
+  background: radial-gradient(circle at center, #050816 0%, #020617 55%, #000 100%);
+  overflow: hidden;
+  color: #f9fafb;
+}
+
+.journey-stars-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.my-journey-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.my-journey-title {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: clamp(4rem, 12vw, 150px);
+  text-align: center;
+  color: #fff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 10rem;
+  line-height: 1;
+}
+
+.my-journey-title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.my-journey-title.reveal span {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.my-journey-layout {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.my-journey-line-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.my-journey-line-track {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.my-journey-line-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: var(--journey-line-progress, 0%);
+  background: linear-gradient(to bottom, #14a9ca, #00f2ff, #14a9ca);
+  box-shadow: 0 0 20px rgba(20, 169, 202, 0.8);
+  border-radius: 20px;
+}
+
+.my-journey-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+}
+
+.my-journey-item {
+  position: relative;
+  width: 50%;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(50px); /* Increased for more dramatic scroll-in */
+  transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+  will-change: transform, opacity;
+}
+
+.my-journey-item.reveal-active {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+.my-journey-item.left { align-self: flex-start; padding-right: 6rem; text-align: right; }
+.my-journey-item.right { align-self: flex-end; padding-left: 6rem; text-align: left; }
+
+.my-journey-card {
+  background: rgba(10, 10, 10, 0.4); 
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem;
+  transition: all 0.4s ease;
+}
+
+.my-journey-card:hover {
+  border-color: #14a9ca;
+  background: rgba(15, 20, 30, 0.7);
+  transform: scale(1.02);
+}
+
+.my-journey-dot {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background: #14a9ca;
+  border-radius: 50%;
+  border: 3px solid #000;
+  box-shadow: 0 0 10px #14a9ca;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.my-journey-item.left .my-journey-dot { right: -9px; }
+.my-journey-item.right .my-journey-dot { left: -9px; }
+
+.my-journey-project-title { font-family: "Anton", sans-serif; font-size: 2rem; margin-bottom: 0.3rem; }
+.my-journey-project-role { font-family: "Orbitron", sans-serif; color: #14a9ca; font-weight: 600; font-size: 1rem; margin-bottom: 0.8rem; }
+.my-journey-project-description { font-family: "Electrolize", sans-serif; font-size: 0.95rem; opacity: 0.85; line-height: 1.6; }
+.my-journey-project-period { display: block; margin-top: 1rem; font-size: 0.8rem; opacity: 0.4; }
+
+@media (max-width: 768px) {
+  .my-journey-line-wrapper { left: 20px; transform: none; }
+  .my-journey-item { width: 100%; padding-left: 3rem !important; padding-right: 0 !important; text-align: left !important; }
+  .my-journey-dot { left: -9px !important; }
+  .my-journey-title { font-size: 3.5rem; }
+}

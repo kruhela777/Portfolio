@@ -687,6 +687,184 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
     />
   );
 }
+
+export function MyJourneySection({ darkMode }: { darkMode: boolean }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const layoutRef = useRef<HTMLDivElement | null>(null);
+  const lineRef = useRef<HTMLDivElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const starCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [journeyTitleVisible, setJourneyTitleVisible] = useState(false);
+
+  const projects = [
+    { id: 1, title: "Techivation", role: "Full Stack Developer", period: "May 2025 – Present", description: "Building and maintaining the full web and SaaS ecosystem powering audio plugin licensing and management." },
+    { id: 2, title: "GreenPrompt", role: "AI‑Powered Product", period: "2024 – 2025", description: "AI‑driven content assistant focused on sustainability‑first prompts and workflows." },
+    { id: 3, title: "DreamPartner", role: "Full Stack Developer", period: "2024", description: "Matchmaking platform with modern UX and secure backend architecture." },
+    { id: 4, title: "KASKA", role: "Frontend Engineer", period: "2024", description: "Conversion‑focused e‑commerce UI with responsive layouts and smooth transitions." },
+    { id: 5, title: "Spotify Clone", role: "Personal Project", period: "2023", description: "Streaming UI with playlists, player controls, and real‑time interactions." },
+    { id: 6, title: "Portfolio Evolution", role: "Designer & Developer", period: "Ongoing", description: "Iterating on this portfolio experience with motion, storytelling, and performance." },
+  ];
+
+  // --- High-Density Starfield Engine ---
+  useEffect(() => {
+    const canvas = starCanvasRef.current;
+    const section = sectionRef.current;
+    if (!canvas || !section) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let stars: any[] = [];
+    const STAR_COUNT = 800;
+
+    const initStars = (width: number, height: number) => {
+      stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 1.3 + 0.2,
+          alpha: Math.random(),
+          alphaDir: Math.random() > 0.5 ? 1 : -1,
+          speed: Math.random() * 0.005 + 0.002,
+          vx: (Math.random() - 0.5) * 0.03,
+          vy: (Math.random() - 0.5) * 0.03,
+        });
+      }
+    };
+
+    const updateCanvasSize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const width = section.offsetWidth;
+      const height = section.offsetHeight;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+      initStars(width, height);
+    };
+
+    const render = () => {
+      const width = canvas.width / (window.devicePixelRatio || 1);
+      const height = canvas.height / (window.devicePixelRatio || 1);
+      
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = darkMode ? "#ffffff" : "#000000";
+
+      for (const star of stars) {
+        star.alpha += star.alphaDir * star.speed;
+        if (star.alpha <= 0.1 || star.alpha >= 0.9) star.alphaDir *= -1;
+
+        star.x += star.vx;
+        star.y += star.vy;
+        if (star.x < 0) star.x = width;
+        if (star.x > width) star.x = 0;
+        if (star.y < 0) star.y = height;
+        if (star.y > height) star.y = 0;
+
+        ctx.globalAlpha = star.alpha;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    updateCanvasSize();
+    render();
+
+    window.addEventListener("resize", updateCanvasSize);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", updateCanvasSize);
+    };
+  }, [darkMode]);
+
+  // --- Title Reveal Observer (Toggle visibility on scroll up/down) ---
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setJourneyTitleVisible(entry.isIntersecting);
+    }, { threshold: 0.1 });
+    
+    if (titleRef.current) observer.observe(titleRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // --- Sequential Items Reveal (Modified to toggle classes for scroll-up) ---
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-active");
+        } else {
+          // Removes class when scrolling away
+          entry.target.classList.remove("reveal-active");
+        }
+      });
+    }, { 
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px" // Slight offset for better visual feel
+    });
+
+    const items = document.querySelectorAll(".my-journey-item");
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
+
+  // --- Timeline Scroll Progress ---
+  useEffect(() => {
+    const updateLine = () => {
+      if (!layoutRef.current || !lineRef.current) return;
+      const rect = layoutRef.current.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      const progress = (windowH * 0.7 - rect.top) / rect.height;
+      const clamped = Math.max(0, Math.min(1, progress));
+      lineRef.current.style.setProperty("--journey-line-progress", `${clamped * 100}%`);
+    };
+    window.addEventListener("scroll", updateLine);
+    return () => window.removeEventListener("scroll", updateLine);
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="my-journey-section" id="my-journey">
+      <canvas ref={starCanvasRef} className="journey-stars-canvas" />
+
+      <div className="my-journey-inner">
+        <h2 ref={titleRef} className={`my-journey-title ${journeyTitleVisible ? "reveal" : ""}`}>
+          {"MY JOURNEY".split("").map((char, i) => (
+            <span key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))}
+        </h2>
+
+        <div className="my-journey-layout" ref={layoutRef}>
+          <div className="my-journey-line-wrapper">
+            <div className="my-journey-line-track" />
+            <div className="my-journey-line-glow" ref={lineRef} />
+          </div>
+
+          <div className="my-journey-items">
+            {projects.map((project, index) => (
+              <div key={project.id} className={`my-journey-item ${index % 2 === 0 ? "left" : "right"}`}>
+                <div className="my-journey-card">
+                  <div className="my-journey-dot" />
+                  <h3 className="my-journey-project-title">{project.title}</h3>
+                  <p className="my-journey-project-role">{project.role}</p>
+                  <p className="my-journey-project-description">{project.description}</p>
+                  <p className="my-journey-project-period">{project.period}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 // ---------------- SERVICES SECTION ----------------
 
 const services = [
@@ -1345,6 +1523,8 @@ export default function HomePage() {
       <SelectedProjectsSection />
 
       <ServicesSection />
+
+      <MyJourneySection darkMode={darkMode} />
     </>
   );
 }
