@@ -22,8 +22,8 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
   canvas.width = width;
   canvas.height = height;
 
-  let animationId: number;
-  let isRunning = true;
+  let animationId: number | null = null;
+  let rafId: number | null = null;
 
   const resize = () => {
     width = window.innerWidth * dpr;
@@ -43,7 +43,7 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
   }));
 
   function animate() {
-    if (!isRunning || !context || !canvas) return;
+    if (!context || !canvas) return;
     
     context.clearRect(0, 0, width, height);
 
@@ -81,17 +81,20 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
       if (n1.y < 0 || n1.y > height) n1.vy *= -1;
     }
 
-    animationId = requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
   }
 
   animate();
 
   return () => {
-    isRunning = false;
-    if (animationId) cancelAnimationFrame(animationId);
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
     window.removeEventListener("resize", resize);
   };
 }, [darkMode]);
+
 
 
   return <canvas ref={canvasRef} className="neuron-bg-canvas" />;
