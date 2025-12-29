@@ -33,6 +33,7 @@
   color: #f9fafb;
   position: relative;
   overflow: hidden;
+  cursor: none;
 }
 
 /* Custom bright green circular border cursor */

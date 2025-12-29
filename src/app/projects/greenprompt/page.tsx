@@ -52,6 +52,7 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
     const init = () => {
       resize();
       neurons.length = 0;
+      const colors = ["#ffffff", "#00ff88"];
       
       for (let i = 0; i < neuronCount; i++) {
         neurons.push({
@@ -60,13 +61,13 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
           vx: (Math.random() - 0.5) * 1.2,
           vy: (Math.random() - 0.5) * 1.2,
           r: Math.random() * 2 + 1.2,
+          color: colors[Math.floor(Math.random() * colors.length)],
         });
       }
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
-      const color = darkMode ? "#ffffff" : "#000000";
       const maxDist = 120 * dpr;
 
       // Connections
@@ -79,7 +80,7 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
           if (dist < maxDist) {
             ctx.save();
             ctx.globalAlpha = 0.8 - dist / maxDist;
-            ctx.strokeStyle = color;
+            ctx.strokeStyle = neurons[i].color;
             ctx.lineWidth = 0.6 * dpr;
             ctx.beginPath();
             ctx.moveTo(neurons[i].x, neurons[i].y);
@@ -94,8 +95,8 @@ function NeuronBackground({ darkMode }: { darkMode: boolean }) {
       for (const neuron of neurons) {
         ctx.beginPath();
         ctx.arc(neuron.x, neuron.y, neuron.r * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.shadowColor = color;
+        ctx.fillStyle = neuron.color;
+        ctx.shadowColor = neuron.color;
         ctx.shadowBlur = 10 * dpr;
         ctx.fill();
 
