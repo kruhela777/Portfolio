@@ -5,7 +5,23 @@ import { useEffect, useRef, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import "./greenprompt.css";
 
-// --- BULLETPROOF CLIENT-ONLY Canvas (No Hydration Issues) ---
+// --- Green Cursor Controller ---
+function GreenCursorController() {
+  useEffect(() => {
+    const el = document.getElementById("green-cursor");
+    if (!el) return;
+
+    const move = (e: MouseEvent) => {
+      el.style.left = `${e.clientX}px`;
+      el.style.top = `${e.clientY}px`;
+    };
+
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
+  return null;
+}
 function NeuronBackground({ darkMode }: { darkMode: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -129,6 +145,9 @@ export default function GreenPromptPage() {
   return (
     <main className="greenprompt-page">
       <NeuronBackground darkMode={darkMode} />
+
+      <div className="green-cursor" id="green-cursor" />
+      <GreenCursorController />
 
       <div className="content-container">
         <div className="greenprompt-inner">
