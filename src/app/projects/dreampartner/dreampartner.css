@@ -15,7 +15,7 @@
 .dreampartner-page {
   background-color: var(--dp-bg-color);
   color: var(--dp-accent-white);
-  min-height: 100vh;
+  min-height: 80vh;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   cursor: none; 
