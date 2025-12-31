@@ -180,7 +180,6 @@ export default function GreenPromptPage() {
                 loop
                 muted
                 playsInline
-                poster="/projects/greenprompt-thumb.png"
               >
                 <source 
                   src="https://res.cloudinary.com/dztthidxb/video/upload/v1766933831/greenprompt-video_imuqco.mp4" 

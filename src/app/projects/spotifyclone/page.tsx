@@ -358,7 +358,6 @@ export default function SpotifyClonePage() {
                 autoPlay
                 loop
                 playsInline
-                poster="/projects/spotify.png"
                 onPlay={() => setVideoPlaying(true)}
                 onPause={() => setVideoPlaying(false)}
               >

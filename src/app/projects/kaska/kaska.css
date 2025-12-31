@@ -129,48 +129,16 @@
   font-family: "Electrolize", sans-serif;
 }
 
-/* Video Container Styling - Mobile Phone Frame */
+/* Video Container Styling */
 .hero-video-container {
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 9 / 19.5;
-  background: #000;
-  border: 12px solid #1a1a1a;
-  border-radius: 36px;
-  position: relative;
-  margin-top: 20px;
-  box-shadow:
-    0 0 0 2px #333,
-    0 20px 40px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 2px #000;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   overflow: hidden;
-  margin-left: 100px;
-}
-
-.hero-video-container::before {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 24px;
-  background: #1a1a1a;
-  border-radius: 0 0 16px 16px;
-  z-index: 2;
-}
-
-.hero-video-container::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 4px;
-  background: #333;
-  border-radius: 2px;
-  z-index: 2;
+  position: relative;
+  margin-top: 60px;
 }
 
 .project-video {

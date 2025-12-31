@@ -161,7 +161,6 @@ export default function KaskaPage() {
                 loop
                 muted
                 playsInline
-                poster="/projects/kaska.png"
               >
                 <source
                   src="https://res.cloudinary.com/dztthidxb/video/upload/v1767122007/KASKA-video_yrz3eh.mp4"
