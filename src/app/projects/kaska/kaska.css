@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Orbitron:wght@700&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tomorrow:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+
+:root {
+  --bg-color: #050505;
+  --accent-white: #ffffff;
+  --text-gray: #a1a1a1;
+  --gp-green: #00ff88;
+}
+.skeleton-loading {
+  min-height: 100vh;
+  background: #050b0f;
+}
+.neuron-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+.kaska-page {
+  min-height: 100vh;
+  color: #f9fafb;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+}
+
+/* Custom teal blue circular border cursor */
+.green-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid #00cccc;
+  box-shadow: 0 0 12px rgba(0, 204, 204, 0.9);
+  pointer-events: none;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+  transition: transform 0.06s ease-out;
+  background: transparent;
+}
+
+
+
+.content-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+}
+
+.kaska-inner {
+  display: flex;
+  padding: 40px 8%;
+  gap: 40px;
+  min-height: 85vh;
+}
+
+.kaska-left {
+  flex: 1.5;
+}
+
+.kaska-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.kaska-year {
+  font-weight: 600;
+  color: var(--text-gray);
+  margin-bottom: 2px;
+  font-size: 0.95rem;
+}
+
+/* Title row with GitHub icon */
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.kaska-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  line-height: 0.9;
+}
+
+.github-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+  font-size: 1.4rem;
+}
+
+.github-icon-link:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: translateY(-1px) scale(1.03);
+}
+
+.kaska-tagline {
+  font-size: 1.1rem;
+  max-width: 500px;
+  color: var(--text-gray);
+  margin-bottom: 12px;
+  line-height: 1.3;
+  text-align: justify;
+  font-family: "Electrolize", sans-serif;
+}
+
+/* Video Container Styling - Mobile Phone Frame */
+.hero-video-container {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 9 / 19.5;
+  background: #000;
+  border: 12px solid #1a1a1a;
+  border-radius: 36px;
+  position: relative;
+  margin-top: 20px;
+  box-shadow:
+    0 0 0 2px #333,
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 2px #000;
+  overflow: hidden;
+  margin-left: 100px;
+}
+
+.hero-video-container::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 24px;
+  background: #1a1a1a;
+  border-radius: 0 0 16px 16px;
+  z-index: 2;
+}
+
+.hero-video-container::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.project-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 24px;
+}
+
+/* Right Side Content - Smaller text */
+.section-heading {
+  font-family: "Tomorrow", sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.subheading {
+  font-family: "Tomorrow", sans-serif;
+  font-size: 1.2rem;
+}
+
+.body-text {
+  line-height: 1.4;
+  color: var(--text-gray);
+  font-size: 1rem;
+  text-align: justify;
+  font-family: "Electrolize", sans-serif;
+}
+
+.custom-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 6px;
+  font-family: "Electrolize", sans-serif;
+}
+
+.custom-list li {
+  width: 200px;
+  color: var(--text-gray);
+  margin-bottom: 2px;
+  font-size: 0.95rem;
+}
+
+.kaska-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .kaska-inner {
+    flex-direction: column;
+    padding: 40px 6%;
+    gap: 40px;
+  }
+
+  .title-row {
+    align-items: flex-end;
+  }
+
+  .kaska-title {
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
+  }
+
+  .kaska-tagline {
+    font-size: 1rem;
+  }
+
+  .section-heading {
+    font-size: 1.6rem;
+  }
+
+  .github-icon-link {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+}
