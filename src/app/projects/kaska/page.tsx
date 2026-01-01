@@ -207,10 +207,10 @@ export default function KaskaPage() {
               <div className="info-block">
                 <h3 className="subheading">TECH STACK</h3>
                 <ul className="custom-list">
-                  <li>React.js / Next.js</li>
-                  <li>Node.js backend</li>
-                  <li>Modern CSS frameworks</li>
-                  <li>Database integration</li>
+                  <li>Android Application Development / Next.js</li>
+                  <li>Python Backend</li>
+                  <li>JAVA Frameworks</li>
+                  <li>Android Studio</li>
                 </ul>
               </div>
 
